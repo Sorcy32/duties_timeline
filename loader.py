@@ -43,17 +43,15 @@ def open_excel(file='test.xlsx'):
     # Перебираем строки таблицы и заполняем класс EploeeList (класс списка сотрудников). Добавляем в него список
     # сотрудников (Emploee) и дежурства (класс Dutie)
     for row in sheet:
+        # добавляем сотрудника в список сотрудников если его там нет
         if row[column_name_number].value not in empl_list.get_emploee_names():
             tmp_emploeer = emploee.Emploee(row[column_name_number].value)
-            tmp_emploeer.add_dutie(row[column_date_number].value, row[column_task_number].value, row[column_state_number].value)
             empl_list.add_emploee(tmp_emploeer)
+        # добавляем сотруднику запись в дежурство
+        tmp_emploee = empl_list.get_emploee_by_name(row[column_name_number].value)
+        tmp_emploee.add_dutie(row[column_date_number].value, row[column_task_number].value,
+                              row[column_state_number].value)
 
-    # test
-    test = empl_list.get_emploee_list()
-    for xx in test:
-        for z in xx.get_duties():
-            print(z.state())
-            pass
     return empl_list
 
 

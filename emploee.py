@@ -28,11 +28,12 @@ class Dutie:
 
 
 class Emploee:
-    name = "None"
-    duties = []
+    __name = "None"
+    __duties = []
 
     def __init__(self, name):
-        self.name = name
+        self.__name = name
+        self.__duties = []
 
     def add_dutie(self, date, task, state):
         """
@@ -40,22 +41,21 @@ class Emploee:
         :param date: date of a record
         :param task: task number (iccedent or task)
         :param state: state of iccident of task
-        :return:
         """
         temp_task = Dutie(date, task, state)
-        self.duties.append(temp_task)
+        self.__duties.append(temp_task)
 
     def get_duties(self):
-        return self.duties
+        return self.__duties
 
     def get_first_date_of_dutie(self):
         pass
 
     def get_name(self):
-        return self.name
+        return self.__name
 
     def __repr__(self):
-        return f"Сотрудник {self.name} сделал {len(self.duties)} изменений."
+        return f"Сотрудник {self.__name} сделал {len(self.__duties)} изменений."
 
 
 class EploeeList:
@@ -79,3 +79,6 @@ class EploeeList:
 
     def get_emploee_list(self):
         return self.emloeelist
+
+    def __repr__(self):
+        return f"Список сотрудников содержит имён: {len(self.emploee_names_list)}"
