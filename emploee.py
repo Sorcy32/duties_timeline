@@ -56,7 +56,6 @@ class Emploee:
 
     def __repr__(self):
         return f"Сотрудник {self.name} сделал {len(self.duties)} изменений."
-        # return f"Emploee {self.name}"
 
 
 class EploeeList:
@@ -80,22 +79,3 @@ class EploeeList:
 
     def get_emploee_list(self):
         return self.emloeelist
-
-"""gusakov = Emploee('Gusakov')
-for x in range(10):
-    gusakov.add_dutie("06.02.2022", 'testtusknumber' + str(x), 'в работе')
-
-print(gusakov)
-test2 = gusakov.get_duties()
-for x in test2:
-    print(x)
-
-kleshev = Emploee('Gusakov')
-for x in range(15):
-    kleshev.add_dutie("06.02.2022", 'testtusknumber' + str(x), 'в работе')
-
-print(kleshev)
-test2 = kleshev.get_duties()
-for x in test2:
-    print(x)
-"""
