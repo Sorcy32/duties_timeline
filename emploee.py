@@ -1,3 +1,6 @@
+import datetime
+
+
 class Dutie:
     _date = None
     _task = None
@@ -10,26 +13,38 @@ class Dutie:
         :param task: task number (iccedent or task)
         :param state: state of iccident of task
         """
-        self._date = date
+        self._date = datetime.datetime.strptime(str(date), '%d.%m.%Y %H:%M:%S')
         self._task = task
         self._state = state
 
-    def date(self):
+    def get_date(self):
         return self._date
 
-    def task(self):
+    def get_task(self):
         return self._task
 
-    def state(self):
+    def get_state(self):
         return self._state
 
     def __repr__(self):
         return f'Дата:  {self.date()}  Документ: {self.task()} Состояние: {self.state()}'
 
 
+class Day:
+    __day_name = None
+    __day_number = None
+    __tasks_list = []
+    __fitst_in_progress_state_time = None
+    __last_finish_state_time = None
+
+    def __init__(self):
+        pass
+
+
 class Emploee:
     __name = "None"
     __duties = []
+    __days = []
 
     def __init__(self, name):
         self.__name = name
@@ -61,6 +76,7 @@ class Emploee:
 class EploeeList:
     emloeelist = []
     emploee_names_list = []
+    period_start_date, period_finish_date = None, None
 
     def __init__(self):
         pass
@@ -79,6 +95,18 @@ class EploeeList:
 
     def get_emploee_list(self):
         return self.emloeelist
+
+    def set_period_start_date(self, date):
+        self.period_start_date = date
+
+    def set_period_finish_date(self, date):
+        self.period_finish_date = date
+
+    def get_period_finish_date(self):
+        return self.period_finish_date
+
+    def get_period_start_date(self):
+        return self.period_start_date
 
     def __repr__(self):
         return f"Список сотрудников содержит имён: {len(self.emploee_names_list)}"
