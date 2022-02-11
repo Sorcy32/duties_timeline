@@ -20,9 +20,10 @@ def get_days_matrix(empl_list):
 
 def emploee_fill_days(emploee, template_matrix):
     dut = emploee.get_duties()
-    # TODO сделать сортировку по времени и датам и наполнять класс сотрудника днями на основании шаблона матрицы.
-    for duty in dut:
-        pass
+    dut.sort()  # Сортируем список дежурств по датам записи
+    for x in dut:
+        print(x)
+    print(emploee.get_name())
 
 
 def get_fitst_in_wokrk_time(day):

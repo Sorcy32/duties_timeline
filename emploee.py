@@ -26,8 +26,11 @@ class Dutie:
     def get_state(self):
         return self._state
 
+    def __lt__(self, other):
+        return self._date < other.get_date()
+
     def __repr__(self):
-        return f'Дата:  {self.date()}  Документ: {self.task()} Состояние: {self.state()}'
+        return f'Дата:  {self.get_date()}  Документ: {self.get_task()} Состояние: {self.get_state()}'
 
 
 class Day:
