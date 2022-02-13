@@ -34,24 +34,58 @@ class Dutie:
 
 
 class Day:
-    __day_name = None
+    __day_date = None
     __day_number = None
     __tasks_list = []
     __fitst_in_progress_state_time = None
     __last_finish_state_time = None
 
-    def __init__(self):
-        pass
+    def __init__(self, date, number):
+        self.__day_date = date
+        self.__day_number = number
+
+    def add_task(self, task):
+        self.__tasks_list.append(task)
+
+    def set_first_state_in_work(self, date):
+        self.__fitst_in_progress_state_time = date
+
+    def set_last_finish_state_time(self, date):
+        self.__last_finish_state_time = date
+
+    def get_first_state_in_work(self):
+        return self.__fitst_in_progress_state_time
+
+    def get_last_finish_state_time(self):
+        return self.__last_finish_state_time
+
+    def get_day_date(self):
+        return self.__day_date
+
+    def __lt__(self, other):
+        return self.__day_date < other.get_day_date()
+
+    def __repr__(self):
+        try:
+            in_work = self.get_last_finish_state_time() - self.get_first_state_in_work()
+        except TypeError:
+            in_work = None
+        return f'Число: {self.get_day_date()}, первое "в работе" {self.get_first_state_in_work()}' \
+               f', последнее "завершен" {self.get_last_finish_state_time()}, ' \
+               f'Отработал {in_work} '
 
 
 class Emploee:
     __name = "None"
-    __duties = []
-    __days = []
+    __duties = None
+    __days = None
+    __days_dates_list = []
 
     def __init__(self, name):
         self.__name = name
         self.__duties = []
+        self.__days = []
+        self.__days_dates_list = []
 
     def add_dutie(self, date, task, state):
         """
@@ -63,6 +97,10 @@ class Emploee:
         temp_task = Dutie(date, task, state)
         self.__duties.append(temp_task)
 
+    def add_day(self, day):
+        self.__days.append(day)
+        self.__days_dates_list.append(day.get_day_date())
+
     def get_duties(self):
         return self.__duties
 
@@ -72,32 +110,58 @@ class Emploee:
     def get_name(self):
         return self.__name
 
+    def get_days(self):
+        return self.__days
+
+    def get_all_days_dates(self):
+        tmpor = []
+        for x in self.__days:
+            tmpor.append(x.get_day_date())
+        return tmpor
+
+    def sort_days(self):
+        self.__days.sort()
+
+    def get_average_work_time(self):
+        time = []
+        try:
+            for day in self.get_days():
+                t = day.get_last_finish_state_time() - day.get_first_state_in_work()
+                t = t.seconds
+                time.append(t)
+            t2 = sum(time)/len(time)
+            z = datetime.timedelta(seconds=t2)
+            return str(z).split(".")[0]
+        except TypeError:
+            return False
+
     def __repr__(self):
-        return f"Сотрудник {self.__name} сделал {len(self.__duties)} изменений."
+        return f"Сотрудник {self.__name} среднее время работы {self.get_average_work_time()}."
 
 
 class EploeeList:
-    emloeelist = []
-    emploee_names_list = []
+    __emloeelist = []
     period_start_date, period_finish_date = None, None
 
     def __init__(self):
         pass
 
     def add_emploee(self, empl):
-        self.emloeelist.append(empl)
-        self.emploee_names_list.append(empl.get_name())
+        self.__emloeelist.append(empl)
 
     def get_emploee_names(self):
-        return self.emploee_names_list
+        t = []
+        for x in self.__emloeelist:
+            t.append(x.get_name())
+        return t
 
     def get_emploee_by_name(self, name):
-        for eml in self.emloeelist:
+        for eml in self.__emloeelist:
             if eml.get_name() == name:
                 return eml
 
     def get_emploee_list(self):
-        return self.emloeelist
+        return self.__emloeelist
 
     def set_period_start_date(self, date):
         self.period_start_date = date
@@ -112,4 +176,4 @@ class EploeeList:
         return self.period_start_date
 
     def __repr__(self):
-        return f"Список сотрудников содержит имён: {len(self.emploee_names_list)}"
+        return f"Список сотрудников содержит имён: {len(self.__emloeelist)}"

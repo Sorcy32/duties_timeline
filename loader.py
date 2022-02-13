@@ -20,7 +20,7 @@ def open_txt():
                 totallist.append(tmp)
 
 
-def open_excel(file='test.xlsx'):
+def open_excel(file='test2.xlsx'):
     """
     Loads File by name and convert data to a EmploeeList
     :param file: name of the input-data file
