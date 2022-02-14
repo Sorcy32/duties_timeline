@@ -1,4 +1,4 @@
-from _datetime import datetime, timedelta, date
+from _datetime import datetime, timedelta
 import emploee
 
 
@@ -47,17 +47,56 @@ def emploee_fill_days(emploe):
     emploe.sort_days()
 
 
-def emploee_fill_days_(emploe):
-    emploe_duties = emploe.get_duties()
-    for duty in emploe_duties:
-        if len(emploe.get_days()) == 0 or duty.get_date().replace(hour=0, minute=0, second=0,
-                                                                microsecond=0) not in emploe.get_all_days_dates():
-            tmp_day = emploee.Day(duty.get_date().replace(hour=0, minute=0, second=0, microsecond=0),
-                                  duty.get_date().day)
-            emploe.add_day(tmp_day)
-        else:
-            for day in emploe.get_days():
-                if day.get_day_date() == duty.get_date().replace(hour=0, minute=0, second=0, microsecond=0):
-                    tmp_day = day
+def make_global_table(emploee_list, matrix, table_type):
+    goal_list = []
+
+    empl_list = emploee_list.get_emploee_list()
+    for man in empl_list:
+        tmp_emlpoeer = []
+
+        dct = {'Name': man.get_name()}
+        for x in matrix:
+            dct.update({x: ''})
+
+        for day in man.get_days():
+            if table_type == 'First':
+                dct.update({day.get_day_date(): day.get_first_state_in_work().time().isoformat(timespec='minutes')})
+            elif table_type == 'Last':
+                dct.update({day.get_day_date(): str(day.get_last_finish_state_time().time().isoformat(timespec='minutes'))})
+            elif table_type == 'Middle':
+                dct.update({day.get_day_date(): str(day.get_middle_state_date().time().isoformat(timespec='minutes'))})
+
+        for values in dct.values():
+            tmp_emlpoeer.append(values)
+
+        goal_list.append(tmp_emlpoeer)
+    return goal_list
 
 
+def make_global_table_(emploee_list, matrix, table_type='Middle'):
+    goal_list = []
+
+    for employer in emploee_list.get_emploee_list():
+        tmp_empl = [employer.get_name()]
+        print(employer.get_name(), len(employer.get_days()))
+        for matrix_day in matrix:
+            for day in employer.get_days():
+                if matrix_day == day.get_day_date():
+                    # print(f"{matrix_day} {matrix_day==day.get_day_date()} {day.get_day_date()} {employer.get_name()}")
+                    try:
+                        if table_type == 'Middle':
+                            tmp_empl.append(str(day.get_middle_state_date().time()))
+                        elif table_type == 'First':
+                            tmp_empl.append(str(day.get_first_state_in_work().time()))
+                        elif table_type == 'Last':
+                            tmp_empl.append(str(day.get_last_finish_state_time().time()))
+                        else:
+                            tmp_empl.append("")
+                    except AttributeError:
+                        tmp_empl.append('Error')
+                else:
+                    tmp_empl.append('x')
+                    pass
+        goal_list.append(tmp_empl)
+
+    return goal_list

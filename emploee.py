@@ -59,6 +59,9 @@ class Day:
     def get_last_finish_state_time(self):
         return self.__last_finish_state_time
 
+    def get_middle_state_date(self):
+        return self.get_last_finish_state_time() - self.get_first_state_in_work()
+
     def get_day_date(self):
         return self.__day_date
 
