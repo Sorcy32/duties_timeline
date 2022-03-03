@@ -59,44 +59,26 @@ def make_global_table(emploee_list, matrix, table_type):
             dct.update({x: ''})
 
         for day in man.get_days():
-            if table_type == 'First':
-                dct.update({day.get_day_date(): day.get_first_state_in_work().time().isoformat(timespec='minutes')})
-            elif table_type == 'Last':
-                dct.update({day.get_day_date(): str(day.get_last_finish_state_time().time().isoformat(timespec='minutes'))})
-            elif table_type == 'Middle':
-                dct.update({day.get_day_date(): str(day.get_middle_state_date().time().isoformat(timespec='minutes'))})
-
+            try:
+                if table_type == 'First':
+                    dct.update({day.get_day_date(): day.get_first_state_in_work().time().isoformat(timespec='minutes')})
+                elif table_type == 'Last':
+                    dct.update({day.get_day_date(): str(day.get_last_finish_state_time()
+                                                        .time().isoformat(timespec='minutes'))})
+                elif table_type == 'Middle':
+                    t = 'Er'
+                    try:
+                        t = str(day.get_middle_state_date()).split(":")[0] \
+                            + ":" \
+                            + str(day.get_middle_state_date()).split(":")[1]
+                    except IndexError:
+                        pass
+                    dct.update({day.get_day_date(): t})
+            except AttributeError:
+                dct.update({day.get_day_date(): 'Er'})
         for values in dct.values():
             tmp_emlpoeer.append(values)
 
+
         goal_list.append(tmp_emlpoeer)
-    return goal_list
-
-
-def make_global_table_(emploee_list, matrix, table_type='Middle'):
-    goal_list = []
-
-    for employer in emploee_list.get_emploee_list():
-        tmp_empl = [employer.get_name()]
-        print(employer.get_name(), len(employer.get_days()))
-        for matrix_day in matrix:
-            for day in employer.get_days():
-                if matrix_day == day.get_day_date():
-                    # print(f"{matrix_day} {matrix_day==day.get_day_date()} {day.get_day_date()} {employer.get_name()}")
-                    try:
-                        if table_type == 'Middle':
-                            tmp_empl.append(str(day.get_middle_state_date().time()))
-                        elif table_type == 'First':
-                            tmp_empl.append(str(day.get_first_state_in_work().time()))
-                        elif table_type == 'Last':
-                            tmp_empl.append(str(day.get_last_finish_state_time().time()))
-                        else:
-                            tmp_empl.append("")
-                    except AttributeError:
-                        tmp_empl.append('Error')
-                else:
-                    tmp_empl.append('x')
-                    pass
-        goal_list.append(tmp_empl)
-
     return goal_list

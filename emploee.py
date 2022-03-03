@@ -43,6 +43,9 @@ class Day:
     def __init__(self, date, number):
         self.__day_date = date
         self.__day_number = number
+        self.__tasks_list =[]
+        self.__fitst_in_progress_state_time = None
+        self.__last_finish_state_time = None
 
     def add_task(self, task):
         self.__tasks_list.append(task)
@@ -60,7 +63,10 @@ class Day:
         return self.__last_finish_state_time
 
     def get_middle_state_date(self):
-        return self.get_last_finish_state_time() - self.get_first_state_in_work()
+        try:
+            return self.get_last_finish_state_time() - self.get_first_state_in_work()
+        except TypeError:
+            return 'Er'
 
     def get_day_date(self):
         return self.__day_date

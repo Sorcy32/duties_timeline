@@ -1,3 +1,4 @@
+import sys
 from openpyxl import load_workbook
 from datetime import datetime, timedelta
 import emploee
@@ -20,13 +21,17 @@ def open_txt():
                 totallist.append(tmp)
 
 
-def open_excel(file='test2.xlsx'):
+def open_excel(file='input.xlsx'):
     """
     Loads File by name and convert data to a EmploeeList
     :param file: name of the input-data file
     :return: EmploeeList
     """
-    book = load_workbook(file)
+    try:
+        book = load_workbook(file)
+    except KeyError:
+        input('Ошибка при открытии файла.')
+        sys.exit()
     sheet = book.active
     # Ищем столбцы с необходимой информацией
     column_date_number, column_task_number, column_state_number, column_name_number = 0, 0, 0, 0

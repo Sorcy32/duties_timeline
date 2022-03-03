@@ -25,7 +25,7 @@ class Saver:
     def __init__(self):
         time_now = str(datetime.now())[0:19].replace(":", ".")
         filename = time_now + ".xlsx"
-        self.writer = pd.ExcelWriter(filename, engine='openpyxl')
+        self.writer = pd.ExcelWriter(filename, engine='openpyxl', index=False, header=False)
         self.datasets = {}
 
     def add_sheet(self, data_set, header, sheet_name='Sorcy32'):
@@ -33,10 +33,10 @@ class Saver:
         for x in data_set:
             data.append(x)
         df = pd.DataFrame(data)
-        self.datasets.update({sheet_name:df})
+        self.datasets.update({sheet_name: df})
 
     def save(self):
         for k, v in self.datasets.items():
-            v.to_excel(self.writer, sheet_name=k)
+            v.to_excel(self.writer, sheet_name=k, index=False, header=False)
         self.writer.save()
         self.writer.close()
